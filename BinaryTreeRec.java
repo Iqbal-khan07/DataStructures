@@ -32,6 +32,20 @@ public class BinaryTreeRec <T extends Comparable<? super T>>{
 		}
 	}
 	
+	public ArrayList<T> sort(){
+		ArrayList<T> out = new ArrayList<>();
+		inOrder(root, out);
+		return out;
+	}
+	
+	private void inOrder(Node<T> curr, ArrayList<T> out) {
+		if(curr != null) {
+			inOrder(curr.left, out);
+			out.add(curr.data);
+			inOrder(curr.right, out);
+		}
+	}
+	
 	public void removeRec(T data) {
 		root = remove(root, data);
 	}
@@ -140,5 +154,4 @@ public class BinaryTreeRec <T extends Comparable<? super T>>{
 			return prev;
 		}	
 	}
-
 }

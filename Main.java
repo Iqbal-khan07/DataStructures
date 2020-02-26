@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 /**
  * TODO Put here a description of what this class does.
@@ -59,6 +60,19 @@ public class Main {
 		for(Integer num: arr1) {
 			System.out.printf("%d ", num);
 		}
+		ArrayList<Integer> arr2 = new ArrayList<>();
+		
+		int[] input = {10, 5, 20, 6, 12, 7, 11, 16, 19, 18, 17};
+		for(int x: input) {
+			arr2.add(x);
+		}
+		
+		ArrayList<Integer> arr22 = Sorts.sort(arr2);
+		System.out.println();
+		for(Integer x: arr22) {
+			System.out.println(x);
+		}
+		
 		
 	}
 

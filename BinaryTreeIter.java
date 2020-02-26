@@ -24,7 +24,7 @@ public class BinaryTreeIter <T extends Comparable<? super T>> {
 			curr = getNextCurr(curr, data);
 		}
 	}
-	
+		
 	public void removeIter(T data) {
 		// finding the parent node of the node to be removed
 		Node<T> curr = root;
