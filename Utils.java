@@ -11,11 +11,11 @@ import java.util.Set;
 public class Utils {
 	public static int[] getRandomArray(int n) {
 		int[] array = new int[n];
-		Random rand = new Random();
+		Random rand = new Random(1);
 		Set<Integer> set = new HashSet<Integer>();
 		int inserted = 0;
 		while(inserted < n) {
-			int newNum = rand.nextInt(n);
+			int newNum = rand.nextInt(5*n);
 			if(!set.contains(newNum)) {
 				array[inserted++] = newNum;
 				set.add(newNum);

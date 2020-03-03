@@ -6,7 +6,7 @@
  *         Created Feb 20, 2020.
  */
 public class BinaryTreeIter <T extends Comparable<? super T>> {
-	private Node<T> root;
+	public Node<T> root;
 	
 	public void insertIter(T data) {
 		Node<T> curr = root;
@@ -33,6 +33,8 @@ public class BinaryTreeIter <T extends Comparable<? super T>> {
 			if(curr == root && curr.data.compareTo(data) == 0) {
 				if(curr.right == null && curr.left == null) {
 					this.root = null;
+				}else if(curr.right == null || curr.left == null){
+					removeleafNode(curr, data);
 				}else {
 					Node<T> current = curr;
 					removeNodeWithTwoChild(current);
@@ -60,13 +62,18 @@ public class BinaryTreeIter <T extends Comparable<? super T>> {
 
 	private void removeNodeWithTwoChild(Node<T> current) {
 		Node<T> minNodeParent = minValueNodeParent(current.right);
-		minNodeParent = minNodeParent == null ? current: minNodeParent;
-		current.data = minNodeParent.left.data;
-		removeleafNode(minNodeParent, minNodeParent.left.data);
-		
+		minNodeParent = (minNodeParent == null) ? current: minNodeParent;
+		if(minNodeParent == current) {
+			current.data = current.right.data;
+			removeleafNode(minNodeParent, minNodeParent.right.data);	
+		}else {
+			current.data = minNodeParent.left.data;
+			removeleafNode(minNodeParent, minNodeParent.left.data);	
+		}
+		removeleafNode(minNodeParent, minNodeParent.left.data);	
 	}
 	
-	private void removeleafNode(Node<T> curr, T data) {
+	protected void removeleafNode(Node<T> curr, T data) {
 		Node<T> current;
 		if(curr.right != null && curr.right.data.compareTo(data) == 0) {
 			current = curr.right;
@@ -78,7 +85,7 @@ public class BinaryTreeIter <T extends Comparable<? super T>> {
 	}
 	
 	// return the parent node of RightMostNode
-	private Node<T> minValueNodeParent(Node<T> curr){
+	protected Node<T> minValueNodeParent(Node<T> curr){
 		Node<T> minNode = curr;
 		if(curr.left == null) return null;
 		while(curr.left != null) {
@@ -88,7 +95,7 @@ public class BinaryTreeIter <T extends Comparable<? super T>> {
 		return minNode;
 	}
 	
-	private Node<T> getNextCurr(Node<T> curr, T data){
+	protected Node<T> getNextCurr(Node<T> curr, T data){
 		Node<T> nextCurr;
 		if(curr.data.compareTo(data) >= 0) {
 			nextCurr = curr.left;
@@ -192,5 +199,17 @@ public class BinaryTreeIter <T extends Comparable<? super T>> {
 			}	
 		}
 		return prev;
+	}
+	
+	protected void inOrder() {
+		inOrder(root);
+		System.out.println();
+	}
+	private void inOrder(Node<T> curr) {
+		if(curr != null) {
+			inOrder(curr.left);
+			System.out.print(" " + String.format(curr.data.toString()));
+			inOrder(curr.right);
+		}
 	}
 }
