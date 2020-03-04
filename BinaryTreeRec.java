@@ -155,6 +155,7 @@ public class BinaryTreeRec <T extends Comparable<? super T>>{
 		}	
 	}
 	
-
-	
+	public Node<T> root(){
+		return this.root;
+	}	
 }

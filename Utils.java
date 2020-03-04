@@ -1,4 +1,6 @@
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
 
@@ -31,7 +33,39 @@ public class Utils {
 			array[i] = j;
 		}
 		return array;
-		
-		
 	}
+	
+	public static <T extends Comparable<? super T>> int numOfNodes(Node<T> root) {
+		if (root==null) 
+	        return 0;  
+	          
+	        // Initialize empty queue. 
+	        Queue<Node<T>> queue = new LinkedList<Node<T>>(); 
+	          
+	        // Do level order traversal starting from root 
+	        queue.add(root); 
+	          
+	        int count=0; // Initialize count of full nodes 
+	        while (!queue.isEmpty())  
+	        { 
+	  
+	            Node<T> temp = queue.poll(); 
+	   
+	            // Enqueue left child  
+	            if (temp.left != null)  
+	            { 
+	                queue.add(temp.left); 
+	            } 
+	  
+	            // Enqueue right child  
+	            if (temp.right != null)  
+	            { 
+	                queue.add(temp.right); 
+	            } 
+	        	count++; 
+	      	  
+	        } 
+	        return count; 
+	}
+	
 }

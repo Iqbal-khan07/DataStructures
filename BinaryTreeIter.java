@@ -1,4 +1,3 @@
-
 /**
  * TODO Put here a description of what this class does.
  *
@@ -6,7 +5,8 @@
  *         Created Feb 20, 2020.
  */
 public class BinaryTreeIter <T extends Comparable<? super T>> {
-	public Node<T> root;
+	protected Node<T> root;
+	protected int totalNodesVisited = 0;
 	
 	public void insertIter(T data) {
 		Node<T> curr = root;
@@ -22,6 +22,7 @@ public class BinaryTreeIter <T extends Comparable<? super T>> {
 				break;
 			}
 			curr = getNextCurr(curr, data);
+			totalNodesVisited++;
 		}
 	}
 		
@@ -200,16 +201,13 @@ public class BinaryTreeIter <T extends Comparable<? super T>> {
 		}
 		return prev;
 	}
-	
-	protected void inOrder() {
-		inOrder(root);
-		System.out.println();
+		
+	public Node<T> root(){
+		return this.root;
 	}
-	private void inOrder(Node<T> curr) {
-		if(curr != null) {
-			inOrder(curr.left);
-			System.out.print(" " + String.format(curr.data.toString()));
-			inOrder(curr.right);
-		}
+	
+	public int visitedNodes() {
+		return totalNodesVisited; 
 	}
 }
+

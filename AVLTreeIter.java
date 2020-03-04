@@ -10,9 +10,7 @@ import java.util.Stack;
  */
 
 public class AVLTreeIter<T extends Comparable<? super T>> extends BinaryTreeIter<T>{
-	// stores the height of the left and right subtree of a node
 	private HashMap<Node<T>, Integer[]> bfs = new HashMap<>(); 
-	// stores the node that is imbalanced
 	private Node<T> flagged = null;
 	
 	public AVLTreeIter() {
@@ -24,13 +22,13 @@ public class AVLTreeIter<T extends Comparable<? super T>> extends BinaryTreeIter
 		Node<T> curr = root;
 		Integer[] heights = {0, 0};
 		
-		// inserting into the tree 
+		// inserting into the tree
 		if(root == null) {
 			this.root = new Node<T>(data);
 			bfs.put(root, heights);
 			return;
 		}
-		// stack to keep track of the nodes visited
+		
 		Stack<Node<T>> stack = new Stack<>();
 		stack.push(root);
 		while(curr != null) {
@@ -43,12 +41,12 @@ public class AVLTreeIter<T extends Comparable<? super T>> extends BinaryTreeIter
 				bfs.put(curr.right, heights);
 				break;
 			}
-			// get the left or right children
 			curr = getNextCurr(curr, data);
+			totalNodesVisited++;
 			stack.push(curr);
 		}		
 		
-		// calculating the height of each node from the bottom and on the way up rotating the imbalanced
+		// calculating the height of each node from the bottom and on the way up rotating
 		updateAndBalance(stack);
 		
 	}
@@ -56,21 +54,19 @@ public class AVLTreeIter<T extends Comparable<? super T>> extends BinaryTreeIter
 	private void updateAndBalance(Stack<Node<T>> stack) {
 		Node<T> curr = null;
 		while(!stack.isEmpty()) {
+			totalNodesVisited++;
 			curr = stack.pop();
 			if(curr != null) {
-				// if the child node is imbalanced then balance it
 				if(flagged != null) {
 					balance(curr);
 					flagged = null;
 				}
 				
-				// calculating the new heights of the current node 
 				int lheight = (curr.left != null) ? height(curr.left):0;
 				int rheight = (curr.right != null) ? height(curr.right):0;
 				if(Math.abs(BF(lheight, rheight)) > 1) {
 					flagged = curr;
 				}
-				// updating the heights
 				updateHeights(curr, lheight, rheight);
 			}
 		}
@@ -83,9 +79,8 @@ public class AVLTreeIter<T extends Comparable<? super T>> extends BinaryTreeIter
 	}
 	
 	private void balanceRoot(Node<T> parent) {
-		// I can combine this function in the balance method.
 		Node<T> current = parent;
-		// rotating based on the four casing
+			
 		int BF_current = BF(current);
 		if(BF_current > 0) {
 			int BF_current_left = BF(current.left);
@@ -227,7 +222,6 @@ public class AVLTreeIter<T extends Comparable<? super T>> extends BinaryTreeIter
 		return -1;
 	}
 
-	
 	@Override
 	public void removeIter(T data) {
 		// finding the parent node of the node to be removed
@@ -237,19 +231,15 @@ public class AVLTreeIter<T extends Comparable<? super T>> extends BinaryTreeIter
 		while(curr != null) {
 			// if data to be removed is in root
 			if(curr == root && curr.data.compareTo(data) == 0) {
-				// if the element to be removed is the root node and it has no children
 				if(curr.right == null && curr.left == null) {
 					this.root = null;
-				// case where it has one child as null
 				}else if(curr.right == null || curr.left == null){
 					removeleafNode(curr, data);
 				}else {
-				// case where the it has two children
 					Node<T> current = curr;
 					removeNodeWithTwoChild(current, curr);
 					return;	
 				}
-				// if the node to be removed is in the left subtree of the parent node
 			}else if(curr.left != null && curr.left.data.compareTo(data) == 0) {
 				Node<T> current = curr.left;
 				if(current.right == null || current.left == null) {
@@ -257,7 +247,6 @@ public class AVLTreeIter<T extends Comparable<? super T>> extends BinaryTreeIter
 				}else {
 					removeNodeWithTwoChild(current, curr);
 				}
-				// if the node to be removed is in the right subtree of the parent node
 			}else if(curr.right != null && curr.right.data.compareTo(data) == 0) {
 				Node<T> current = curr.right;
 				if(current.right == null || current.left == null) {
@@ -270,7 +259,7 @@ public class AVLTreeIter<T extends Comparable<? super T>> extends BinaryTreeIter
 				stack.push(curr);
 			}		
 		}
-		// updating and balancing the tree after the removal of the node. 
+		
 		updateAndBalance(stack);
 	}
 	
@@ -285,16 +274,16 @@ public class AVLTreeIter<T extends Comparable<? super T>> extends BinaryTreeIter
 			removeleafNode(minNodeParent, minNodeParent.left.data);	
 		}
 		
-		// updating the side of the tree from where we found the successor
+		
 		updateAndBalanceRightLeftSide(current, parent);
 	}
 	
 	private void updateAndBalanceRightLeftSide(Node<T> curr, Node<T> parent) {
 		Stack<Node<T>> stack = new Stack<>();
-		// if we are not at the root of the tree adding the parent node
 		if(curr != parent) {
 			stack.push(parent);
 		}
+		
 		stack.push(curr);
 		if(curr.right != null) {
 			curr = curr.right;
@@ -315,4 +304,5 @@ public class AVLTreeIter<T extends Comparable<? super T>> extends BinaryTreeIter
 	private int BF(int left, int right) {
 		return left - right;
 	}
+	
 }
