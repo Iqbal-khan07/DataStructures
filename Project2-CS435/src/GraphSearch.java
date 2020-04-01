@@ -12,10 +12,10 @@ import java.util.Queue;
  */
 public class GraphSearch {
 	
-	public static ArrayList<Node> DFSRec(final Graph g, final Node start, final Node end) {
+	public static ArrayList<Node> DFSRec(final Node start, final Node end) {
 		ArrayList<Node> path = new ArrayList<>();
 		HashSet<Node> visited = new HashSet<>();
-		boolean found = DFS(start, end, path, visited, g);
+		boolean found = DFS(start, end, path, visited);
 		if(found) {
 			return path;
 		}else {
@@ -24,23 +24,21 @@ public class GraphSearch {
 		
 	}
 	
-	
-	
-	private static boolean DFS(final Node curr, final Node end, final ArrayList<Node> path, final HashSet<Node> visited, final Graph g) {
+	private static boolean DFS(final Node curr, final Node end, final ArrayList<Node> path, final HashSet<Node> visited) {
 		visited.add(curr);
 		path.add(curr);
 		if(curr == end) {
 			return true;
 		}
-		for(Node n: g.getNeighbours(curr)) {
+		for(Node n: curr.getEdges()) {
 			if(!visited.contains(n)) {
-				return DFS(n, end, path, visited, g);
+				return DFS(n, end, path, visited);
 			}
 		}
 		return false;
 	}
 	
-	public static ArrayList<Node> DFSIter(final Graph g, final Node start, final Node end) {
+	public static ArrayList<Node> DFSIter(final Node start, final Node end) {
 		Stack<Node> stack = new Stack<>();
 		ArrayList<Node> path = new ArrayList<>();
 		HashSet<Node> visited = new HashSet<>();
@@ -58,7 +56,7 @@ public class GraphSearch {
 					break;
 				}
 				
-				for(Node n: g.getNeighbours(curr)) {
+				for(Node n: curr.getEdges()) {
 					stack.push(n);
 				}		
 			}
@@ -72,49 +70,62 @@ public class GraphSearch {
 	}
 	
 	public static ArrayList<Node> BFTIter(final Graph g) {
-		Queue<Node> queue = new LinkedList<Node>();
+		
 		ArrayList<Node> path = new ArrayList<>();
 		HashSet<Node> visited = new HashSet<>();
-		queue.add(g.getHead());
-		Node curr;
+		HashSet<Node> vertices = g.getAllNodes();
+		
+		for(Node n: vertices) {
+			if(!visited.contains(n)) {
+				GraphSearch.BFTIter(n, visited, path);
+			}
+		}
+		
+		return path;
+	}
+	
+	public static void BFTIter(final Node start, HashSet<Node> visited, ArrayList<Node> path){
+		Queue<Node> queue = new LinkedList<Node>();
+		queue.add(start);
 		while(!queue.isEmpty()) {
-			curr = queue.poll();
+			Node curr = queue.poll();
 			if(!visited.contains(curr)) {
 				visited.add(curr);
 				path.add(curr);
 				
-				for(Node n: g.getNeighbours(curr)) {
+				for(Node n: curr.getEdges()) {
 					queue.add(n);
 				}		
 			}
 		}
-		return path;
 	}
 	
 	public static ArrayList<Node> BFTRec(final Graph g) {
 		ArrayList<Node> path = new ArrayList<>();
 		HashSet<Node> visited = new HashSet<>();
-		Queue<Node> queue = new LinkedList<>();
-		queue.add(g.getHead());
-		BFT(path, queue, visited, g);	
+		HashSet<Node> vertices = g.getAllNodes();
 		
+		for(Node n: vertices) {
+			Queue<Node> queue = new LinkedList<>();
+			queue.add(n);
+			BFT(path, queue, visited);	
+		}			
 		return path;
-	
 	}
 	
-	private static void BFT(final ArrayList<Node> path, final Queue<Node> queue, final HashSet<Node> visited, final Graph g) {
+	private static void BFT(final ArrayList<Node> path, final Queue<Node> queue, final HashSet<Node> visited) {
 		if(!queue.isEmpty()) {
 			Node curr = queue.poll();
 				
 			if(!visited.contains(curr)) {
-				for(Node neigh: g.getNeighbours(curr)) {
+				for(Node neigh: curr.getEdges()) {
 					queue.add(neigh);
 				}
 				
 				visited.add(curr);
 				path.add(curr);
 	    	}
-			BFT(path, queue, visited, g);
+			BFT(path, queue, visited);
 		}
 	}
 }

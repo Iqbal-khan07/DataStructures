@@ -19,8 +19,8 @@ public class Main {
 //		System.out.print(g);
 		
 		Graph g = new Graph();
-		int[] nums = {0, 1, 2 , 3, 4, 5, 6, 7, 8, 9};
-		Node[] nodes = new Node[10];
+		int[] nums = {0, 1, 2 , 3, 4, 5, 6, 7, 8, 9, 10};
+		Node[] nodes = new Node[nums.length];
 		Node node;
 		int i=0;
 		for(int num: nums) {
@@ -39,20 +39,20 @@ public class Main {
 		g.addUndirectedEdge(nodes[7], nodes[8]);
 		g.addUndirectedEdge(nodes[8], nodes[9]);
 		
-		ArrayList<Node> path = GraphSearch.DFSIter(g, nodes[0], nodes[9]);
-		System.out.println(path);
-		ArrayList<Node> path1 = GraphSearch.DFSRec(g, nodes[0], nodes[9]);
-		System.out.println(path1);
-		
-		ArrayList<Node> path2 = GraphSearch.BFTIter(g);
-		System.out.println(path2);
+//		ArrayList<Node> path = GraphSearch.DFSIter(g, nodes[0], nodes[9]);
+//		System.out.println(path);
+//		ArrayList<Node> path1 = GraphSearch.DFSRec(g, nodes[0], nodes[9]);
+//		System.out.println(path1);
+//		
+//		ArrayList<Node> path2 = GraphSearch.BFTIter(g);
+//		System.out.println(path2);
 		ArrayList<Node> path3 = GraphSearch.BFTRec(g);
 		System.out.println(path3);
 
-		Graph linkedList = Main.createLinkedList(1000);
-		ArrayList<Node> list = Main.BFTIterLinkedList(linkedList);
-		ArrayList<Node> list1 = Main.BFTRecLinkedList(linkedList);
-		System.out.println(list);
+//		Graph linkedList = Main.createLinkedList(10000);
+//		ArrayList<Node> list = Main.BFTIterLinkedList(linkedList);
+//		ArrayList<Node> list1 = Main.BFTRecLinkedList(g);
+//		System.out.println(list);
 		
 	}
 	

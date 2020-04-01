@@ -10,11 +10,11 @@ import java.util.HashSet;
  *         Created Mar 30, 2020.
  */
 public class Graph {
-	private HashMap<Node, HashSet<Node>> ajjList;
+	private List<Node> vertices;
 	private Node head = null;
 	
 	public Graph() {
-		ajjList = new HashMap<>();
+		vertices = new ArrayList<>();
 	}
 	
 	public Node getHead() {
@@ -25,11 +25,7 @@ public class Graph {
 		if(head == null) {
 			head = n;
 		}
-		ajjList.putIfAbsent(n, new HashSet<Node>());
-	}
-	
-	public HashSet<Node> getNeighbours(final Node n){
-		return ajjList.get(n);
+		vertices.add(n);
 	}
 	
 	public void addUndirectedEdge(final Node first, final Node second) {
@@ -43,15 +39,17 @@ public class Graph {
 	}
 	
 	public void addDirectedEdge(final Node from, final Node to) {
-		ajjList.get(from).add(to);
+		from.addEdge(to);
 	}
 	
 	public void removeDirectedEdge(final Node from, final Node to) {
-		ajjList.get(from).remove(to);
+		from.removeEdge(to);
 	}
 	
 	public HashSet<Node> getAllNodes(){
-		return (HashSet<Node>) this.ajjList.keySet();
+		HashSet<Node> nodes = new HashSet<>();
+		nodes.addAll(this.vertices);
+		return nodes;
 	}
 	
 
