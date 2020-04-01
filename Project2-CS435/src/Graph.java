@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.HashMap;
 import java.util.HashSet;
 	
 /**
@@ -11,20 +10,12 @@ import java.util.HashSet;
  */
 public class Graph {
 	private List<Node> vertices;
-	private Node head = null;
 	
 	public Graph() {
 		vertices = new ArrayList<>();
 	}
 	
-	public Node getHead() {
-		return this.head;
-	}
-	
 	public void addNode(final Node n) {
-		if(head == null) {
-			head = n;
-		}
 		vertices.add(n);
 	}
 	
