@@ -63,6 +63,7 @@ public class Node implements Comparable<Node> {
 	@Override
 	public int compareTo(Node n) {
 		Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
+		// checking if the string value is an integer
 		if(pattern.matcher(this.value).matches()) {
 			return Integer.parseInt(this.value) - Integer.parseInt(n.value);
 		}
