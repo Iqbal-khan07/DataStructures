@@ -397,7 +397,7 @@ public class Main {
 		
 		distances.put(sourceNode, 0);
 		GridNode curr = sourceNode;
-		while(!curr.equals(destNode)) {
+		while(curr != null && !curr.equals(destNode)) {
 			List<GridNode> neighbours = curr.getEdges();
 			for(GridNode neighbour: neighbours) {
 				if(!exausted.contains(neighbour)) {
@@ -411,6 +411,10 @@ public class Main {
 			}
 			exausted.add(curr);
 			Set<GridNode, Integer> s = min_queue.poll();
+			while(s != null && exausted.contains(s.getNode())) {
+				s = min_queue.poll();
+			}
+			
 			if(s!=null) {
 				curr = s.getNode();
 			}else {
@@ -424,13 +428,15 @@ public class Main {
 			path.add(0, curr);
 			curr = curr.getParent();
 		}
-		path.add(0, curr);
+		if(!path.isEmpty()) {
+			path.add(0, curr);
+		}
 		
 		return path;
 	}
 	
 	public static int heuristic(final GridNode node, final GridNode target) {
-		return (target.x - node.x) + (target.y - node.y);
+		return Math.abs(target.x - node.x) + Math.abs(target.y - node.y);
 //		HashMap<String, Integer> val = new HashMap<String, Integer>();
 //		String[] s = {"A", "B", "C", "D", "E", "F", "G"};
 //		int[] v = {10, 5, 10, 6, 5, 2, 0};
@@ -460,7 +466,12 @@ public class Main {
 				}
 			}
 			exausted.add(curr);
+			
 			Set<Node, Integer> s = min_queue.poll();
+			while(s != null && exausted.contains(s.getNode())) {
+				s = min_queue.poll();
+			}
+			
 			if(s!=null) {
 				curr = s.getNode();
 			}else {
@@ -469,6 +480,7 @@ public class Main {
 		}
 		return distances;
 	}
+
 	
 	public static ArrayList<Node> BFTRecLinkedList(final Graph graph){
 		return GraphSearch.BFTRec(graph);
