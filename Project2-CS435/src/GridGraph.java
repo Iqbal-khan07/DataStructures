@@ -2,12 +2,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-/**
- * TODO Put here a description of what this class does.
- *
- * @author USMAN.
- *         Created Apr 7, 2020.
- */
+
 public class GridGraph{
 	private List<GridNode> vertices;
 	

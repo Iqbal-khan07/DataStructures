@@ -1,10 +1,5 @@
 
-/**
- * TODO Put here a description of what this class does.
- *
- * @author USMAN.
- *         Created Apr 7, 2020.
- */
+
 public class Set<T, V extends Comparable<? super V>> implements Comparable<Set<T, V>>{
 	T n;
 	V property;

@@ -5,12 +5,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
-/**
- * TODO Put here a description of what this class does.
- *
- * @author USMAN.
- *         Created Apr 8, 2020.
- */
+
 public class TopoSort {
 	
 	public static ArrayList<Node> Kahns(final DirectedGraph graph){

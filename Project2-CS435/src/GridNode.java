@@ -3,12 +3,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
-/**
- * TODO Put here a description of what this class does.
- *
- * @author USMAN.
- *         Created Apr 7, 2020.
- */
+
 public class GridNode implements Comparable<GridNode>{
 	int x, y;
 	String value;
@@ -94,7 +89,7 @@ public class GridNode implements Comparable<GridNode>{
         GridNode n = (GridNode) o;
         
 		return (n.x == this.x) && (n.y == this.y);
-//        return n.value == this.value;
+        
 	}
 	
 

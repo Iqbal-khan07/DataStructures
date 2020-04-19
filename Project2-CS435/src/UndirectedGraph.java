@@ -1,10 +1,5 @@
 
-/**
- * TODO Put here a description of what this class does.
- *
- * @author USMAN.
- *         Created Mar 30, 2020.
- */
+
 public class UndirectedGraph extends Graph{
 	
 	public UndirectedGraph() {

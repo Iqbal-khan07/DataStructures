@@ -2,12 +2,8 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.ArrayList;
 import java.util.HashMap;
-/** 
- * TODO Put here a description of what this class does.
- *
- * @author USMAN.
- *         Created Mar 30, 2020.
- */
+
+
 public class Node implements Comparable<Node> {
 	private String value;
 	Node parent;
@@ -63,7 +59,6 @@ public class Node implements Comparable<Node> {
 	@Override
 	public int compareTo(Node n) {
 		Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
-		// checking if the string value is an integer
 		if(pattern.matcher(this.value).matches()) {
 			return Integer.parseInt(this.value) - Integer.parseInt(n.value);
 		}

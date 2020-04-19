@@ -1,15 +1,13 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Stack;
 import java.util.Queue;
 
-/**
- * TODO Put here a description of what this class does.
- *
- * @author USMAN.
- *         Created Mar 30, 2020.
- */
+
 public class GraphSearch {
 	
 	public static ArrayList<Node> DFSRec(final Node start, final Node end) {
@@ -18,10 +16,8 @@ public class GraphSearch {
 		boolean found = DFS(start, end, path, visited);
 		if(found) {
 			return path;
-		}else {
-			return null;
 		}
-		
+		return null;
 	}
 	
 	private static boolean DFS(final Node curr, final Node end, final ArrayList<Node> path, final HashSet<Node> visited) {
@@ -55,7 +51,6 @@ public class GraphSearch {
 					found = true;
 					break;
 				}
-				
 				for(Node n: curr.getEdges()) {
 					stack.push(n);
 				}		
@@ -64,9 +59,8 @@ public class GraphSearch {
 		
 		if(found) {
 			return path;
-		}else {
-			return null;
 		}
+		return null;
 	}
 	
 	public static ArrayList<Node> BFTIter(final Graph g) {
@@ -127,5 +121,90 @@ public class GraphSearch {
 	    	}
 			BFT(path, queue, visited);
 		}
+	}
+	
+	public static ArrayList<GridNode> astar(final GridNode sourceNode, final GridNode destNode){
+		PriorityQueue<Set<GridNode, Integer>> min_queue = new PriorityQueue<Set<GridNode, Integer>>();
+		HashMap<GridNode, Integer> distances = new HashMap<>();
+		HashSet<GridNode> exausted = new HashSet<>();
+		
+		distances.put(sourceNode, 0);
+		GridNode curr = sourceNode;
+		while(curr != null && !curr.equals(destNode)) {
+			List<GridNode> neighbours = curr.getEdges();
+			for(GridNode neighbour: neighbours) {
+				if(!exausted.contains(neighbour)) {
+					int distancetoNeighbour = distances.get(curr) + curr.getEdgeWeight(neighbour);
+					if(distances.get(neighbour) == null || distances.get(neighbour) > distancetoNeighbour) {
+						distances.put(neighbour, distancetoNeighbour);
+						min_queue.add(new Set<GridNode, Integer>(neighbour, distancetoNeighbour+heuristic(neighbour, destNode)));
+						neighbour.setParent(curr);
+					}	
+				}
+			}
+			exausted.add(curr);
+			Set<GridNode, Integer> s = min_queue.poll();
+			while(s != null && exausted.contains(s.getNode())) {
+				s = min_queue.poll();
+			}
+			
+			if(s!=null) {
+				curr = s.getNode();
+			}else {
+				curr = null;
+			}	
+		}
+		
+		ArrayList<GridNode> path = new ArrayList<>();
+		curr = destNode;
+		while(curr.getParent() != null) {
+			path.add(0, curr);
+			curr = curr.getParent();
+		}
+		if(!path.isEmpty()) {
+			path.add(0, curr);
+		}
+		
+		return path;
+	}
+	
+	private static int heuristic(final GridNode node, final GridNode target) {
+		return Math.abs(target.x - node.x) + Math.abs(target.y - node.y);
+		
+	}
+	
+	public static HashMap<Node, Integer> dijkstras(final Node start){
+		PriorityQueue<Set<Node, Integer>> min_queue = new PriorityQueue<Set<Node, Integer>>();
+		HashMap<Node, Integer> distances = new HashMap<>();
+		HashSet<Node> exausted = new HashSet<>();
+		
+		distances.put(start, 0);
+		Node curr = start;
+		while(curr != null && distances.containsKey(curr)) {
+			List<Node> neighbours = curr.getEdges();
+			for(Node neighbour: neighbours) {
+				if(!exausted.contains(neighbour)) {
+					int distancetoNeighbour = distances.get(curr) + curr.getEdgeWeight(neighbour);
+					if(distances.get(neighbour) == null || distances.get(neighbour) > distancetoNeighbour) {
+						distances.put(neighbour, distancetoNeighbour);
+						min_queue.add(new Set<Node, Integer>(neighbour, distancetoNeighbour));
+						neighbour.setParent(curr);
+					}	
+				}
+			}
+			exausted.add(curr);
+			
+			Set<Node, Integer> s = min_queue.poll();
+			while(s != null && exausted.contains(s.getNode())) {
+				s = min_queue.poll();
+			}
+			
+			if(s!=null) {
+				curr = s.getNode();
+			}else {
+				curr = null;
+			}
+		}
+		return distances;
 	}
 }
