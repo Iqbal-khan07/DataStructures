@@ -36,36 +36,25 @@ public class Utils {
 	}
 	
 	public static <T extends Comparable<? super T>> int numOfNodes(Node<T> root) {
-		if (root==null) 
-	        return 0;  
-	          
-	        // Initialize empty queue. 
-	        Queue<Node<T>> queue = new LinkedList<Node<T>>(); 
-	          
-	        // Do level order traversal starting from root 
-	        queue.add(root); 
-	          
-	        int count=0; // Initialize count of full nodes 
-	        while (!queue.isEmpty())  
-	        { 
-	  
-	            Node<T> temp = queue.poll(); 
-	   
-	            // Enqueue left child  
-	            if (temp.left != null)  
-	            { 
-	                queue.add(temp.left); 
-	            } 
-	  
-	            // Enqueue right child  
-	            if (temp.right != null)  
-	            { 
-	                queue.add(temp.right); 
-	            } 
-	        	count++; 
-	      	  
-	        } 
-	        return count; 
+		if (root==null) {
+			return 0;  
+		} 
+	                  
+        Queue<Node<T>> queue = new LinkedList<Node<T>>(); 
+        queue.add(root);    
+        int count=0; 
+        while (!queue.isEmpty())  { 
+            Node<T> temp = queue.poll();
+            if (temp.left != null){ 
+                queue.add(temp.left); 
+            } 
+  
+            if (temp.right != null){ 
+                queue.add(temp.right); 
+            } 
+        	count++;  
+        } 
+        return count; 
 	}
 	
 }

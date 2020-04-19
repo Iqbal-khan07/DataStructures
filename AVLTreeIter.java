@@ -42,7 +42,6 @@ public class AVLTreeIter<T extends Comparable<? super T>> extends BinaryTreeIter
 				break;
 			}
 			curr = getNextCurr(curr, data);
-			totalNodesVisited++;
 			stack.push(curr);
 		}		
 		
@@ -54,7 +53,6 @@ public class AVLTreeIter<T extends Comparable<? super T>> extends BinaryTreeIter
 	private void updateAndBalance(Stack<Node<T>> stack) {
 		Node<T> curr = null;
 		while(!stack.isEmpty()) {
-			totalNodesVisited++;
 			curr = stack.pop();
 			if(curr != null) {
 				if(flagged != null) {
