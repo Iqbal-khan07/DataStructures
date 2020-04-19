@@ -129,6 +129,7 @@ public class GraphSearch {
 		HashSet<GridNode> exausted = new HashSet<>();
 		
 		distances.put(sourceNode, 0);
+		min_queue.add(new Set<GridNode, Integer>(sourceNode, heuristic(sourceNode, destNode)));
 		GridNode curr = sourceNode;
 		while(curr != null && !curr.equals(destNode)) {
 			List<GridNode> neighbours = curr.getEdges();
