@@ -15,78 +15,82 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-//		long start, finish;
+//		Main.timeInvestigation(10000);
 		AVLTreeIter<Integer> AVLtree = new AVLTreeIter<>();
-		BinaryTreeRec<Integer> binaryRecTree = new BinaryTreeRec<>();
-		BinaryTreeIter<Integer> binaryIterTree = new BinaryTreeIter<>();
-		int[] arr1 = Utils.getRandomArray(100000);
-//		int[] arr = Utils.getSortedArray(10);
 		
-//		start = System.currentTimeMillis();
+		int[] arr1 = {5, 7, 6, 2, 1, 5, 8, 14};
+		
+		for(int num: arr1) {
+			AVLtree.insertIter(num);			
+		}
+		AVLtree.removeIter(5);
+		
+		System.out.print("Done");
+		
+		
+		
+
+
+	}
+	
+	public static void timeInvestigation(int n) {
+		long start, finish;
+		AVLTreeIter<Integer> AVLtree = new AVLTreeIter<>();
+		
+		System.out.println("INSERTING RANDOM ELEMENTS");
+		
+		int[] arr1 = Utils.getRandomArray(n);
+		
+		start = System.currentTimeMillis();
 		for(int num: arr1) {
 			AVLtree.insertIter(num);			
 		}
 		
+		finish = System.currentTimeMillis();
+		System.out.println("Done Inserting in AVL");
+		System.out.println("Time to insert in AVL: " + (finish - start) + "ms");
 		
+		BinaryTreeIter<Integer> binaryIterTree = new BinaryTreeIter<>();
 		
-//		finish = System.currentTimeMillis();
-//		System.out.println("Done Inserting in AVL");
-//		System.out.println("Time to insert in AVL: " + (finish - start) + "ms");
-//		start = System.currentTimeMillis();
-//		for(int num: arr) {
-//			binaryRecTree.insertRec(num);
-//		}
-//		finish = System.currentTimeMillis();
-//		System.out.println("Done Inserting in BinaryTreeRecursive");
-//		System.out.println("Time to insert in BinaryTreeRecursive: " + (finish - start) + "ms");
-//		start = System.currentTimeMillis();
-//		for(int num: arr) {
-//			binaryIterTree.insertIter(num);
-//		}
-//		finish = System.currentTimeMillis();
-//		System.out.println("Done Inserting in BinaryTreeIter");
-//		System.out.println("Time to insert in BinaryTreeIter: " + (finish - start) + "ms");
-//		
-//		System.out.println("Number of elements in iter: " + Utils.numOfNodes(binaryIterTree.root()));
-//		System.out.println("Number of elements in rec: " + Utils.numOfNodes(binaryRecTree.root()));
-//		System.out.println("Number of elements in AVL: " + Utils.numOfNodes(AVLtree.root()));
-//		
-//		System.out.println("Number of nodes visited in iter: " + binaryIterTree.visitedNodes() );
-//		System.out.println("Number of nodes visited in AVL: " + AVLtree.visitedNodes());
-//		
-//		System.out.println();
-//		System.out.println();
-//
-//		start = System.currentTimeMillis();
-//		for(int num: arr1) {
-//			AVLtree.insertIter(num);			
-//		}
-//		
-//		finish = System.currentTimeMillis();
-//		System.out.println("Done Inserting in AVL");
-//		System.out.println("Time to insert in AVL: " + (finish - start) + "ms");
-//		start = System.currentTimeMillis();
-//		for(int num: arr1) {
-//			binaryRecTree.insertRec(num);
-//		}
-//		finish = System.currentTimeMillis();
-//		System.out.println("Done Inserting in BinaryTreeRecursive");
-//		System.out.println("Time to insert in BinaryTreeRecursive: " + (finish - start) + "ms");
-//		start = System.currentTimeMillis();
-//		for(int num: arr1) {
-//			binaryIterTree.insertIter(num);
-//		}
-//		finish = System.currentTimeMillis();
-//		System.out.println("Done Inserting in BinaryTreeIter");
-//		System.out.println("Time to insert in BinaryTreeIter: " + (finish - start) + "ms");
-//		
-//		System.out.println("Number of elements in iter: " + Utils.numOfNodes(binaryIterTree.root()));
-//		System.out.println("Number of elements in rec: " + Utils.numOfNodes(binaryRecTree.root()));
-//		System.out.println("Number of elements in AVL: " + Utils.numOfNodes(AVLtree.root()));
-//		
-//		System.out.println("Number of nodes visited in iter: " + binaryIterTree.visitedNodes() );
-//		System.out.println("Number of nodes visited in AVL: " + AVLtree.visitedNodes());
-
+		start = System.currentTimeMillis();
+		for(int num: arr1) {
+			binaryIterTree.insertIter(num);
+		}
+		finish = System.currentTimeMillis();
+		System.out.println("Done Inserting in BinaryTreeIter");
+		System.out.println("Time to insert in BinaryTreeIter: " + (finish - start) + "ms");
+		
+		System.out.println("Number of nodes visited in iter: " + binaryIterTree.visitedNodes() );
+		System.out.println("Number of nodes visited in AVL: " + AVLtree.visitedNodes());
+		////////////////////////////////////////////////////////////////////////////////////
+		 
+		AVLTreeIter<Integer> AVLtree1 = new AVLTreeIter<>();
+		
+		System.out.println("INSERTING SORTED ELEMENTS");
+		
+		int[] arr2 = Utils.getSortedArray(n);
+		
+		start = System.currentTimeMillis();
+		for(int num: arr1) {
+			AVLtree1.insertIter(num);			
+		}
+		
+		finish = System.currentTimeMillis();
+		System.out.println("Done Inserting in AVL");
+		System.out.println("Time to insert in AVL: " + (finish - start) + "ms");
+		
+		BinaryTreeIter<Integer> binaryIterTree1 = new BinaryTreeIter<>();
+		
+		start = System.currentTimeMillis();
+		for(int num: arr2) {
+			binaryIterTree1.insertIter(num);
+		}
+		finish = System.currentTimeMillis();
+		System.out.println("Done Inserting in BinaryTreeIter");
+		System.out.println("Time to insert in BinaryTreeIter: " + (finish - start) + "ms");
+		
+		System.out.println("Number of nodes visited in iter: " + binaryIterTree1.visitedNodes() );
+		System.out.println("Number of nodes visited in AVL: " + AVLtree1.visitedNodes());
 	}
 	
 }

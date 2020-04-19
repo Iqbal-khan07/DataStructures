@@ -10,8 +10,8 @@ import java.util.Stack;
  */
 
 public class AVLTreeIter<T extends Comparable<? super T>> extends BinaryTreeIter<T>{
-	private HashMap<Node<T>, Integer[]> bfs = new HashMap<>(); 
-	private Node<T> flagged = null;
+	private HashMap<Node<T>, Integer[]> nodeChildHeighs = new HashMap<>(); 
+	private Node<T> imbalancedNode = null;
 	
 	public AVLTreeIter() {
 		super();
@@ -25,7 +25,7 @@ public class AVLTreeIter<T extends Comparable<? super T>> extends BinaryTreeIter
 		// inserting into the tree
 		if(root == null) {
 			this.root = new Node<T>(data);
-			bfs.put(root, heights);
+			nodeChildHeighs.put(root, heights);
 			return;
 		}
 		
@@ -34,15 +34,16 @@ public class AVLTreeIter<T extends Comparable<? super T>> extends BinaryTreeIter
 		while(curr != null) {
 			if(curr.left == null && curr.data.compareTo(data) >= 0) {
 				curr.left = new Node<T>(data);
-				bfs.put(curr.left, heights);
+				nodeChildHeighs.put(curr.left, heights);
 				break;
 			}else if(curr.right == null && curr.data.compareTo(data) < 0){
 				curr.right = new Node<T>(data);	
-				bfs.put(curr.right, heights);
+				nodeChildHeighs.put(curr.right, heights);
 				break;
 			}
 			curr = getNextCurr(curr, data);
 			stack.push(curr);
+			super.totalNodesVisited += 1;
 		}		
 		
 		// calculating the height of each node from the bottom and on the way up rotating
@@ -55,23 +56,24 @@ public class AVLTreeIter<T extends Comparable<? super T>> extends BinaryTreeIter
 		while(!stack.isEmpty()) {
 			curr = stack.pop();
 			if(curr != null) {
-				if(flagged != null) {
+				if(imbalancedNode != null) {
 					balance(curr);
-					flagged = null;
+					imbalancedNode = null;
 				}
 				
 				int lheight = (curr.left != null) ? height(curr.left):0;
 				int rheight = (curr.right != null) ? height(curr.right):0;
-				if(Math.abs(BF(lheight, rheight)) > 1) {
-					flagged = curr;
+				if(Math.abs(calculateBF(lheight, rheight)) > 1) {
+					imbalancedNode = curr;
 				}
 				updateHeights(curr, lheight, rheight);
 			}
+			super.totalNodesVisited += 1;
 		}
 		// if imbalance is on the root
-		if(flagged != null) {
+		if(imbalancedNode != null) {
 			balanceRoot(root);
-			flagged = null;
+			imbalancedNode = null;
 		}
 		
 	}
@@ -79,9 +81,9 @@ public class AVLTreeIter<T extends Comparable<? super T>> extends BinaryTreeIter
 	private void balanceRoot(Node<T> parent) {
 		Node<T> current = parent;
 			
-		int BF_current = BF(current);
+		int BF_current = getBF(current);
 		if(BF_current > 0) {
-			int BF_current_left = BF(current.left);
+			int BF_current_left = getBF(current.left);
 			//rotate right
 			if(BF_current_left >= 0) {
 				root = rotateRight(current);
@@ -91,7 +93,7 @@ public class AVLTreeIter<T extends Comparable<? super T>> extends BinaryTreeIter
 				root = rotateRight(current);
 			}
 		}else if(BF_current < 0) {
-			int BF_current_right = BF(current.right);
+			int BF_current_right = getBF(current.right);
 			//rotate left
 			if(BF_current_right <= 0) {
 				root = rotateLeft(current);
@@ -105,19 +107,20 @@ public class AVLTreeIter<T extends Comparable<? super T>> extends BinaryTreeIter
 	
 	private void balance(Node<T> parent) {
 		Node<T> current = null;
+		// left is true when the parent's left node is imbalanced
 		boolean left = false;
 		
-		if(parent.right != null && Math.abs(BF(parent.right)) > 1) {
+		if(parent.right != null && Math.abs(getBF(parent.right)) > 1) {
 			current = parent.right;
 			left = false;
-		}else if(parent.left != null && Math.abs(BF(parent.left)) > 1){
+		}else if(parent.left != null && Math.abs(getBF(parent.left)) > 1){
 			current = parent.left;
 			left = true;
 		}
 		
-		int BF_current = BF(current);
+		int BF_current = getBF(current);
 		if(BF_current > 0) {
-			int BF_current_left = BF(current.left);
+			int BF_current_left = getBF(current.left);
 			//rotate right
 			if(BF_current_left >= 0) {
 				if(left) {
@@ -137,7 +140,7 @@ public class AVLTreeIter<T extends Comparable<? super T>> extends BinaryTreeIter
 				
 			}
 		}else if(BF_current < 0) {
-			int BF_current_right = BF(current.right);
+			int BF_current_right = getBF(current.right);
 			//rotate left
 			if(BF_current_right <= 0) {
 				if(left) {
@@ -188,36 +191,36 @@ public class AVLTreeIter<T extends Comparable<? super T>> extends BinaryTreeIter
 	
 	// helper function based on which side of tree we go to search
 	private void updateHeights(Node<T> node, int lheight, int rheight) {
-		Integer[] heights = bfs.get(node);
+		Integer[] heights = nodeChildHeighs.get(node);
 		heights[0] = lheight;
 		heights[1] = rheight;
-		bfs.put(node, heights);
+		nodeChildHeighs.put(node, heights);
 	}
 	
 	private void updateLeftHeight(Node<T> node, int lheight) {
-		Integer[] heights = bfs.get(node);
+		Integer[] heights = nodeChildHeighs.get(node);
 		heights[0] = lheight;
-		bfs.put(node, heights);
+		nodeChildHeighs.put(node, heights);
 	}
 	
 	private void updateRightHeight(Node<T> node, int rheight) {
-		Integer[] heights = bfs.get(node);
+		Integer[] heights = nodeChildHeighs.get(node);
 		heights[1] = rheight;
-		bfs.put(node, heights);
+		nodeChildHeighs.put(node, heights);
 	}
 	
 
 	private int height(Node<T> node) {
-		Integer[] heights = bfs.get(node);
+		Integer[] heights = nodeChildHeighs.get(node);
 		return Math.max(heights[0], heights[1]) + 1;
 	}
 	
 	private int getHeight(Node<T> node) {
-		if(node != null ) {
-			Integer[] heights = bfs.get(node);
-			return Math.max(heights[0], heights[1]);
-		}
-		return -1;
+		if(node == null) {
+			return -1;
+		}	
+		Integer[] heights = nodeChildHeighs.get(node);
+		return Math.max(heights[0], heights[1]);	
 	}
 
 	@Override
@@ -272,34 +275,29 @@ public class AVLTreeIter<T extends Comparable<? super T>> extends BinaryTreeIter
 			removeleafNode(minNodeParent, minNodeParent.left.data);	
 		}
 		
-		
-		updateAndBalanceRightLeftSide(current, parent);
-	}
-	
-	private void updateAndBalanceRightLeftSide(Node<T> curr, Node<T> parent) {
 		Stack<Node<T>> stack = new Stack<>();
-		if(curr != parent) {
+		if(current != parent) {
 			stack.push(parent);
 		}
 		
-		stack.push(curr);
-		if(curr.right != null) {
-			curr = curr.right;
-			stack.push(curr);
-			while(curr.left != null) {
-				curr = curr.left;
-				stack.push(curr);
+		stack.push(current);
+		if(current.right != null) {
+			current = current.right;
+			stack.push(current);
+			while(current.left != null) {
+				current = current.left;
+				stack.push(current);
 			}
 		}
 		updateAndBalance(stack);
 	}
-		
-	private int BF(Node<T> node) {
-		Integer[] heights = bfs.get(node);
-		return heights[0] - heights[1];
+	
+	private int getBF(Node<T> node) {
+		Integer[] heights = nodeChildHeighs.get(node);
+		return calculateBF(heights[0], heights[1]);
 	}
 	
-	private int BF(int left, int right) {
+	private int calculateBF(int left, int right) {
 		return left - right;
 	}
 	
